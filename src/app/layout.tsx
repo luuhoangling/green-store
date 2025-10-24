@@ -11,8 +11,8 @@ import ChatWidget from "@/components/ChatWidget";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Green Store - Cửa hàng vật tư điện nước",
-  description: "Cửa hàng bán vật tư điện nước chất lượng cao với dịch vụ lắp đặt chuyên nghiệp",
+  title: "Green Store - Cửa hàng nông sản sạch",
+  description: "Cửa hàng bán nông sản sạch, thực phẩm tươi ngon chất lượng cao với dịch vụ giao hàng nhanh chóng",
 };
 
 export default function RootLayout({

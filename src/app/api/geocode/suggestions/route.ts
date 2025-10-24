@@ -21,7 +21,7 @@ async function throttledGeocodeSuggestions(query: string) {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'VatTuDienNuoc/1.0 (demo@example.com)',
+        'User-Agent': 'GreenStore/1.0 (greenstore@example.com)',
         'Accept-Language': 'vi'
       }
     });
