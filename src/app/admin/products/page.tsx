@@ -344,7 +344,7 @@ export default function AdminProductsPage() {
           </div>
           <button
             onClick={() => setShowAddForm(true)}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            className="bg-[#6a9739] text-white px-4 py-2 rounded-lg hover:bg-[#527a2d] transition-colors"
           >
             Thêm sản phẩm
           </button>
@@ -631,7 +631,7 @@ export default function AdminProductsPage() {
                   </button>
                   <button
                     onClick={handleAddProduct}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-6 py-2 bg-[#6a9739] text-white rounded-lg hover:bg-[#527a2d] transition-colors"
                   >
                     Thêm sản phẩm
                   </button>
@@ -891,7 +891,7 @@ export default function AdminProductsPage() {
                   </button>
                   <button
                     onClick={handleUpdateProduct}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="px-6 py-2 bg-[#6a9739] text-white rounded-lg hover:bg-[#527a2d] transition-colors"
                   >
                     Cập nhật sản phẩm
                   </button>
@@ -952,8 +952,8 @@ export default function AdminProductsPage() {
         
         {/* Search Results Info */}
         {searchQuery && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-700">
+          <div className="mt-4 p-3 bg-[#f4f8f0] rounded-lg">
+            <p className="text-sm text-[#527a2d]">
               <span className="font-medium">Kết quả tìm kiếm:</span> Tìm thấy {getProductStats().total} sản phẩm cho từ khóa "{searchQuery}"
             </p>
           </div>
@@ -1030,7 +1030,7 @@ export default function AdminProductsPage() {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleEditProduct(product)}
-                          className="px-3 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200 transition-colors"
+                          className="px-3 py-1 bg-[#e6f0d9] text-[#527a2d] rounded text-xs hover:bg-[#c8e0b3] transition-colors"
                         >
                           Chỉnh sửa
                         </button>
@@ -1151,7 +1151,7 @@ export default function AdminProductsPage() {
                               onClick={() => setCurrentPage(page)}
                               className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                                 page === currentPage
-                                  ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                                  ? 'z-10 bg-[#f4f8f0] border-[#6a9739] text-[#6a9739]'
                                   : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                               }`}
                             >

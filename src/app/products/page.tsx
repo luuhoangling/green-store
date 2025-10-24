@@ -251,7 +251,7 @@ export default function ProductsPage() {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="px-4 py-2 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
+                className="px-4 py-2 border border-[#6a9739] text-[#6a9739] rounded-lg hover:bg-[#f4f8f0] transition-all duration-300 transform hover:scale-105"
               >
                 Xóa bộ lọc
               </button>
@@ -415,8 +415,8 @@ export default function ProductsPage() {
                         onClick={() => setCurrentPage(pageNum)}
                         className={`px-4 py-2 border rounded-lg transition-all duration-300 ${
                           currentPage === pageNum
-                            ? 'bg-gradient-blue text-white border-blue-600 shadow-lg'
-                            : 'border-blue-200 hover:bg-blue-50 hover:border-blue-300'
+                            ? 'bg-[#6a9739] text-white border-[#6a9739] shadow-lg'
+                            : 'border-gray-300 hover:bg-[#f4f8f0] hover:border-[#6a9739]'
                         }`}
                       >
                         {pageNum}

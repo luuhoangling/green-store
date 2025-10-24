@@ -82,8 +82,8 @@ export default function OrdersPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'confirmed': return 'bg-blue-100 text-blue-800'
-      case 'shipped': return 'bg-purple-100 text-purple-800'
+      case 'confirmed': return 'bg-[#e6f0d9] text-[#527a2d]'
+      case 'shipped': return 'bg-[#c8e0b3] text-[#3e5c22]'
       case 'delivered': return 'bg-green-100 text-green-800'
       case 'cancelled': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
@@ -172,7 +172,7 @@ export default function OrdersPage() {
                 <p className="text-gray-600 mb-6">Bạn chưa có đơn hàng nào. Hãy bắt đầu mua sắm!</p>
                 <Link
                   href="/products"
-                  className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                  className="inline-block bg-[#6a9739] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#527a2d] transition-colors"
                 >
                   Mua sắm ngay
                 </Link>

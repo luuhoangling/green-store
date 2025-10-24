@@ -147,7 +147,7 @@ export default function ProductDetailPage() {
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <div className="mb-4">
             {product.category && (
-              <span className="inline-block bg-blue-100 text-blue-800 text-sm px-3 py-1 rounded-full mb-2">
+              <span className="inline-block bg-[#e6f0d9] text-[#527a2d] text-sm px-3 py-1 rounded-full mb-2">
                 {product.category.name}
               </span>
             )}
@@ -172,7 +172,7 @@ export default function ProductDetailPage() {
                   </span>
                 </>
               ) : (
-                <p className="text-3xl font-bold text-blue-600">
+                <p className="text-3xl font-bold text-[#6a9739]">
                   {formatPrice(product.price)}
                 </p>
               )}
@@ -239,12 +239,12 @@ export default function ProductDetailPage() {
             <button
               onClick={handleAddToCart}
               disabled={addingToCart || product.stock === 0}
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-[#6a9739] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#527a2d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {addingToCart ? 'Đang thêm...' : product.stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
             </button>
             
-            <button className="w-full border border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+            <button className="w-full border border-[#6a9739] text-[#6a9739] py-3 px-6 rounded-lg font-semibold hover:bg-[#f4f8f0] transition-colors">
               Yêu cầu lắp đặt
             </button>
           </div>

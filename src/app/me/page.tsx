@@ -22,9 +22,9 @@ interface Address {
   city: string
   district: string
   ward: string
-  is_default: boolean
-  created_at: string
-  updated_at: string
+  is_default?: boolean
+  created_at?: string
+  updated_at?: string
 }
 
 
@@ -417,7 +417,7 @@ function ProfilePageContent() {
               <button
                 type="submit"
                 disabled={updating}
-                className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#6a9739] hover:bg-[#527a2d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6a9739] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {updating ? 'Đang cập nhật...' : 'Cập nhật thông tin'}
               </button>
@@ -458,7 +458,7 @@ function ProfilePageContent() {
                               {address.line1}
                             </h4>
                             {address.is_default && (
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#e6f0d9] text-[#527a2d]">
                                 Mặc định
                               </span>
                             )}

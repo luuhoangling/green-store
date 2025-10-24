@@ -3,32 +3,53 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary-blue: #2563eb;
-  --primary-blue-light: #3b82f6;
-  --primary-blue-dark: #1d4ed8;
-  --primary-blue-50: #eff6ff;
-  --primary-blue-100: #dbeafe;
-  --primary-blue-200: #bfdbfe;
-  --primary-blue-300: #93c5fd;
-  --primary-blue-400: #60a5fa;
-  --primary-blue-500: #3b82f6;
-  --primary-blue-600: #2563eb;
-  --primary-blue-700: #1d4ed8;
-  --primary-blue-800: #1e40af;
-  --primary-blue-900: #1e3a8a;
-  --primary-green: #16a34a;
-  --primary-green-light: #22c55e;
-  --primary-green-dark: #15803d;
-  --primary-green-50: #f0fdf4;
-  --primary-green-100: #dcfce7;
-  --primary-green-200: #bbf7d0;
-  --primary-green-300: #86efac;
-  --primary-green-400: #4ade80;
-  --primary-green-500: #22c55e;
-  --primary-green-600: #16a34a;
-  --primary-green-700: #15803d;
-  --primary-green-800: #166534;
-  --primary-green-900: #14532d;
+  
+  /* Primary Color - Xanh lá organic */
+  --color-primary: #6a9739;
+  --color-primary-light: #8db255;
+  --color-primary-dark: #527a2d;
+  --color-primary-50: #f4f8f0;
+  --color-primary-100: #e6f0d9;
+  --color-primary-200: #c8e0b3;
+  --color-primary-300: #aad08d;
+  --color-primary-400: #8db255;
+  --color-primary-500: #6a9739;
+  --color-primary-600: #527a2d;
+  --color-primary-700: #3e5c22;
+  --color-primary-800: #2a3e17;
+  --color-primary-900: #16200c;
+  
+  /* Secondary Color - Cam đất */
+  --color-secondary: #ff6b35;
+  --color-secondary-light: #ff8c5f;
+  --color-secondary-dark: #e05a2c;
+  --color-secondary-50: #fff4f0;
+  --color-secondary-100: #ffe5dc;
+  --color-secondary-200: #ffc8b3;
+  --color-secondary-300: #ffaa8a;
+  --color-secondary-400: #ff8c5f;
+  --color-secondary-500: #ff6b35;
+  --color-secondary-600: #e05a2c;
+  --color-secondary-700: #c04923;
+  --color-secondary-800: #a0381a;
+  --color-secondary-900: #802711;
+  
+  /* Accent Color - Vàng nhạt */
+  --color-accent: #ffc107;
+  --color-accent-light: #ffd54f;
+  --color-accent-dark: #ffa000;
+  
+  /* Neutral colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
 }
 
 @theme inline {
@@ -159,6 +180,22 @@ body {
 }
 
 /* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-light) 100%);
+}
+
+.bg-gradient-accent {
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+}
+
+.bg-gradient-primary-light {
+  background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-primary-100) 100%);
+}
+
 .bg-gradient-blue {
   background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
 }
@@ -221,6 +258,20 @@ body {
 }
 
 /* Text gradient */
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-secondary {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .text-gradient-blue {
   background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
   -webkit-background-clip: text;

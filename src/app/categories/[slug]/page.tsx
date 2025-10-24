@@ -217,14 +217,14 @@ export default function CategoryPage() {
                 <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path>
                 </svg>
-                <span className="ml-1 text-gray-500 md:ml-2">{currentCategory.name}</span>
+                <span className="ml-1 text-gray-500 md:ml-2">{currentCategory?.name}</span>
               </div>
             </li>
           </ol>
         </nav>
 
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{currentCategory.name}</h1>
-        <p className="text-gray-600 mb-6">{currentCategory._count.products} sản phẩm</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{currentCategory?.name}</h1>
+        <p className="text-gray-600 mb-6">{currentCategory?._count.products} sản phẩm</p>
 
         {/* Search and Filter */}
         <div className="bg-white p-6 rounded-lg shadow-sm border mb-6">
@@ -239,7 +239,7 @@ export default function CategoryPage() {
               />
             </div>
             
-            {currentCategory.children.length > 0 && (
+            {currentCategory && currentCategory.children.length > 0 && (
               <div className="lg:w-64">
                 <select
                   value={selectedSubCategory}
@@ -249,8 +249,8 @@ export default function CategoryPage() {
                   }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option value="">Tất cả {currentCategory.name}</option>
-                  {currentCategory.children.map((child) => (
+                  <option value="">Tất cả {currentCategory?.name}</option>
+                  {currentCategory?.children.map((child) => (
                     <option key={child.id} value={child.id}>
                       {child.name} ({child._count.products})
                     </option>
@@ -277,7 +277,7 @@ export default function CategoryPage() {
 
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-6 py-2 bg-[#6a9739] text-white rounded-lg hover:bg-[#527a2d] transition-colors"
             >
               Tìm kiếm
             </button>
@@ -392,7 +392,7 @@ export default function CategoryPage() {
                         onClick={() => setCurrentPage(pageNum)}
                         className={`px-4 py-2 border rounded-lg ${
                           currentPage === pageNum
-                            ? 'bg-blue-600 text-white border-blue-600'
+                            ? 'bg-[#6a9739] text-white border-[#6a9739]'
                             : 'border-gray-300 hover:bg-gray-50'
                         }`}
                       >

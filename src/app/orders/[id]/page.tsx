@@ -88,8 +88,8 @@ export default function OrderDetailPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'confirmed': return 'bg-blue-100 text-blue-800'
-      case 'shipped': return 'bg-purple-100 text-purple-800'
+      case 'confirmed': return 'bg-[#e6f0d9] text-[#527a2d]'
+      case 'shipped': return 'bg-[#c8e0b3] text-[#3e5c22]'
       case 'delivered': return 'bg-green-100 text-green-800'
       case 'cancelled': return 'bg-red-100 text-red-800'
       default: return 'bg-gray-100 text-gray-800'
@@ -146,30 +146,6 @@ export default function OrderDetailPage() {
     )
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow rounded-lg p-6">
-            <div className="text-center py-12">
-              <svg className="w-24 h-24 text-red-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-              <h4 className="text-lg font-medium text-gray-900 mb-2">Lỗi</h4>
-              <p className="text-gray-600 mb-6">{error}</p>
-              <Link
-                href="/orders"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Quay lại danh sách đơn hàng
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   if (!order) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
@@ -183,7 +159,7 @@ export default function OrderDetailPage() {
               <p className="text-gray-600 mb-6">Đơn hàng này không tồn tại hoặc bạn không có quyền xem.</p>
               <Link
                 href="/orders"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                className="inline-block bg-[#6a9739] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#527a2d] transition-colors"
               >
                 Quay lại danh sách đơn hàng
               </Link>
@@ -310,7 +286,7 @@ export default function OrderDetailPage() {
               </div>
               {order.updated_at !== order.placed_at && (
                 <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-[#6a9739] rounded-full"></div>
                   <div>
                     <p className="font-medium text-gray-900">Cập nhật lần cuối</p>
                     <p className="text-sm text-gray-600">{new Date(order.updated_at).toLocaleString('vi-VN')}</p>

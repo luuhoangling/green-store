@@ -97,8 +97,8 @@ export default function AdminUsersPage() {
 
   const getRoleColor = (role: string) => {
     switch (role) {
-      case 'admin': return 'bg-purple-100 text-purple-800'
-      case 'buyer': return 'bg-blue-100 text-blue-800'
+      case 'admin': return 'bg-[#e6f0d9] text-[#527a2d]'
+      case 'buyer': return 'bg-[#f4f8f0] text-[#6a9739]'
       default: return 'bg-gray-100 text-gray-800'
     }
   }

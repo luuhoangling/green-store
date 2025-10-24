@@ -99,8 +99,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 href={item.href}
                 className={`group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-300 ${
                   pathname === item.href
-                    ? 'bg-gradient-blue text-white shadow-lg transform scale-105'
-                    : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700 hover:transform hover:scale-105'
+                    ? 'bg-[#6a9739] text-white shadow-lg transform scale-105'
+                    : 'text-gray-600 hover:bg-[#f4f8f0] hover:text-[#6a9739] hover:transform hover:scale-105'
                 }`}
                 onClick={() => setSidebarOpen(false)}
               >
@@ -168,8 +168,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 href={item.href}
                 className={`group flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-300 ${
                   pathname === item.href
-                    ? 'bg-gradient-blue text-white shadow-lg transform scale-105'
-                    : 'text-gray-600 hover:bg-blue-50 hover:text-blue-700 hover:transform hover:scale-105'
+                    ? 'bg-[#6a9739] text-white shadow-lg transform scale-105'
+                    : 'text-gray-600 hover:bg-[#f4f8f0] hover:text-[#6a9739] hover:transform hover:scale-105'
                 }`}
                 title={!desktopSidebarOpen ? item.name : undefined}
               >

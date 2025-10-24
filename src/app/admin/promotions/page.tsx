@@ -310,7 +310,7 @@ export default function AdminPromotionsPage() {
                           <span>{promotion.salePrice > 0 ? formatPrice(promotion.salePrice) : '--'}</span>
                           <button
                             onClick={() => startEditing(promotion)}
-                            className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs hover:bg-blue-200"
+                            className="px-2 py-1 bg-[#e6f0d9] text-[#527a2d] rounded text-xs hover:bg-[#c8e0b3]"
                           >
                             Sửa
                           </button>
@@ -394,7 +394,7 @@ export default function AdminPromotionsPage() {
                         onClick={() => handlePageChange(page)}
                         className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                           currentPage === page
-                            ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                            ? 'z-10 bg-[#f4f8f0] border-[#6a9739] text-[#6a9739]'
                             : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                         }`}
                       >

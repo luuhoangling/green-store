@@ -72,14 +72,14 @@ export default function ChatWidget() {
       <button
         aria-label="Open chat"
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-4 left-4 z-50 w-12 h-12 rounded-full bg-indigo-600 text-white shadow-lg flex items-center justify-center"
+        className="fixed bottom-4 left-4 z-50 w-12 h-12 rounded-full bg-[#6a9739] text-white shadow-lg flex items-center justify-center hover:bg-[#527a2d] transition-colors"
       >
         Chat
       </button>
 
       {open && (
         <div className="fixed bottom-20 left-4 z-50 w-96 max-w-[92vw] h-[70vh] rounded-2xl shadow-2xl bg-white dark:bg-slate-900 flex flex-col overflow-hidden">
-          <div className="flex items-center justify-between p-3 border-b bg-gradient-to-r from-indigo-500 to-indigo-400 text-white">
+          <div className="flex items-center justify-between p-3 border-b bg-gradient-to-r from-[#6a9739] to-[#8db255] text-white">
             <div className="font-semibold">Trợ lý cửa hàng</div>
             <div className="flex items-center gap-2">
               <button onClick={() => setOpen(false)} className="text-white/90 hover:text-white">
@@ -90,7 +90,7 @@ export default function ChatWidget() {
           <div ref={listRef} className="p-3 overflow-auto flex-1 space-y-3">
             {messages.map((m) => (
               <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[78%] p-3 rounded-2xl shadow-sm ${m.role === "user" ? "bg-indigo-100 text-slate-900" : "bg-gray-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100"}`}>
+                <div className={`max-w-[78%] p-3 rounded-2xl shadow-sm ${m.role === "user" ? "bg-[#e6f0d9] text-slate-900" : "bg-gray-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100"}`}>
                   {m.text && (
                     // @ts-ignore
                     <ReactMarkdown>{m.text}</ReactMarkdown>
@@ -114,7 +114,7 @@ export default function ChatWidget() {
                 placeholder="Viết câu hỏi..."
                 className="flex-1 rounded-xl border px-3 py-2 bg-gray-50 dark:bg-slate-800 text-sm"
               />
-              <button onClick={sendMessage} className="px-3 py-2 rounded-xl bg-indigo-600 text-white">
+              <button onClick={sendMessage} className="px-3 py-2 rounded-xl bg-[#6a9739] text-white hover:bg-[#527a2d] transition-colors">
                 Gửi
               </button>
             </div>

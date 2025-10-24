@@ -366,7 +366,7 @@ export default function CartPage() {
           <p className="text-gray-600 mb-6">Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
           <Link
             href="/products"
-            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="inline-block bg-[#6a9739] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#527a2d] transition-colors"
           >
             Tiếp tục mua sắm
           </Link>
@@ -496,7 +496,7 @@ export default function CartPage() {
             
             <Link
               href="/products"
-              className="block w-full text-center border border-blue-200 text-blue-700 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-all duration-300 transform hover:scale-105"
+              className="block w-full text-center border border-[#6a9739] text-[#6a9739] py-3 px-6 rounded-lg font-semibold hover:bg-[#f4f8f0] transition-all duration-300 transform hover:scale-105"
             >
               Tiếp tục mua sắm
             </Link>
