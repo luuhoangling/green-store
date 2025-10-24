@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import ProductList from "./ProductList";
 
 const ReactMarkdown = dynamic(() => import("react-markdown"), { ssr: false });
@@ -13,6 +14,12 @@ type Msg = {
 };
 
 export default function ChatWidget() {
+  const pathname = usePathname();
+  
+  // Ẩn chatbot khi ở trang admin
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>(() => []);
   const [input, setInput] = useState("");
