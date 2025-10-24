@@ -28,11 +28,16 @@ export async function GET(
 
     // Map database fields to frontend format
     const mappedProduct = {
-      ...product,
-      imageUrl: product.image_url,
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      brand: product.brand,
+      description: product.description,
+      price: product.price,
       salePrice: product.sale_price,
       isSale: product.is_sale || false,
       stock: product.stock || 0,
+      imageUrl: product.image_url,
       category: {
         id: product.category_id,
         name: product.category_name,

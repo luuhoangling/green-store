@@ -1,10 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { useSearch } from '@/lib/search-context'
-import { highlightVietnameseSearchTerms } from '@/lib/vietnamese-utils'
-import { formatPrice } from '@/lib/price-utils'
+import ProductCard from '@/components/ProductCard'
 
 interface Product {
   id: number
@@ -34,6 +33,7 @@ interface Category {
 }
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams()
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
@@ -42,9 +42,24 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState('price_asc')
   const [minPrice, setMinPrice] = useState('')
   const [maxPrice, setMaxPrice] = useState('')
+  const [onSale, setOnSale] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    // Check if sale parameter is in URL
+    const saleParam = searchParams.get('sale')
+    if (saleParam === 'true') {
+      setOnSale(true)
+    }
+    
+    // Sync search query from URL
+    const qParam = searchParams.get('q')
+    if (qParam && qParam !== searchQuery) {
+      setSearchQuery(qParam)
+    }
+  }, [searchParams, searchQuery, setSearchQuery])
 
   useEffect(() => {
     fetchCategories()
@@ -52,7 +67,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     fetchProducts()
-  }, [searchQuery, selectedCategory, sortBy, minPrice, maxPrice, currentPage])
+  }, [searchQuery, selectedCategory, sortBy, minPrice, maxPrice, currentPage, onSale])
 
   const fetchCategories = async () => {
     try {
@@ -89,6 +104,10 @@ export default function ProductsPage() {
       
       if (maxPrice) {
         params.append('maxPrice', maxPrice)
+      }
+
+      if (onSale) {
+        params.append('sale', 'true')
       }
 
       const response = await fetch(`/api/products?${params}`)
@@ -144,6 +163,7 @@ export default function ProductsPage() {
     setSortBy('price_asc')
     setMinPrice('')
     setMaxPrice('')
+    setOnSale(false)
     setCurrentPage(1)
     performSearch('')
   }
@@ -151,34 +171,45 @@ export default function ProductsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gradient-blue mb-4 animate-fade-in">Sản phẩm</h1>
-        
+      <h1 className="text-3xl font-bold text-gradient-blue mb-6 animate-fade-in">
+        {onSale ? 'Sản phẩm khuyến mãi' : 'Sản phẩm'}
+      </h1>
 
-        {/* Search and Filter */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border mb-6 animate-slide-in-left">
-          <form onSubmit={handleSearch} className="space-y-4">
-            {/* Search and Category Row */}
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1">
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Sidebar Filter - Left */}
+        <aside className="lg:w-64 flex-shrink-0">
+          <div className="bg-white p-4 rounded-lg shadow-md border sticky top-24">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Bộ lọc</h2>
+            
+            <form onSubmit={handleSearch} className="space-y-4">
+              {/* Search */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tìm kiếm
+                </label>
                 <input
                   type="text"
-                  placeholder="Tìm kiếm sản phẩm..."
+                  placeholder="Tìm sản phẩm..."
                   value={searchQuery}
                   onChange={handleSearchInputChange}
-                  className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a9739] focus:border-[#6a9739]"
                 />
               </div>
-              <div className="md:w-64">
+
+              {/* Category */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Danh mục
+                </label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => {
                     setSelectedCategory(e.target.value)
                     setCurrentPage(1)
                   }}
-                  className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a9739] focus:border-[#6a9739]"
                 >
-                  <option value="">Tất cả danh mục</option>
+                  <option value="">Tất cả</option>
                   {categories.map((category) => (
                     <optgroup key={category.id} label={category.name}>
                       <option value={category.id}>
@@ -193,24 +224,16 @@ export default function ProductsPage() {
                   ))}
                 </select>
               </div>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-gradient-blue text-white rounded-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Tìm kiếm
-              </button>
-            </div>
 
-            {/* Sort and Price Filter Row */}
-            <div className="flex flex-col md:flex-row gap-4 items-end">
-              <div className="md:w-48">
+              {/* Sort */}
+              <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Sắp xếp theo
+                  Sắp xếp
                 </label>
                 <select
                   value={sortBy}
                   onChange={handleSortChange}
-                  className="w-full px-4 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a9739] focus:border-[#6a9739]"
                 >
                   <option value="price_asc">Giá: Thấp → Cao</option>
                   <option value="price_desc">Giá: Cao → Thấp</option>
@@ -219,48 +242,61 @@ export default function ProductsPage() {
                 </select>
               </div>
               
-              <div className="flex gap-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Giá từ
-                  </label>
+              {/* Price Range */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Khoảng giá
+                </label>
+                <div className="flex gap-2">
                   <input
                     type="number"
-                    placeholder="0"
+                    placeholder="Từ"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value)}
                     onBlur={handlePriceFilterChange}
-                    className="w-24 px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                    className="w-full px-2 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a9739] focus:border-[#6a9739]"
                   />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Đến
-                  </label>
                   <input
                     type="number"
-                    placeholder="∞"
+                    placeholder="Đến"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
                     onBlur={handlePriceFilterChange}
-                    className="w-24 px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+                    className="w-full px-2 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6a9739] focus:border-[#6a9739]"
                   />
                 </div>
               </div>
 
+              {/* Sale Checkbox */}
+              <div className="pt-2 border-t">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={onSale}
+                    onChange={(e) => {
+                      setOnSale(e.target.checked)
+                      setCurrentPage(1)
+                    }}
+                    className="w-4 h-4 text-[#6a9739] border-gray-300 rounded focus:ring-[#6a9739]"
+                  />
+                  <span className="text-sm text-gray-700">Khuyến mãi</span>
+                </label>
+              </div>
+
+              {/* Clear Button */}
               <button
                 type="button"
                 onClick={clearFilters}
-                className="px-4 py-2 border border-[#6a9739] text-[#6a9739] rounded-lg hover:bg-[#f4f8f0] transition-all duration-300 transform hover:scale-105"
+                className="w-full px-3 py-2 text-sm border border-[#6a9739] text-[#6a9739] rounded-lg hover:bg-[#f4f8f0] transition-colors"
               >
                 Xóa bộ lọc
               </button>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+        </aside>
 
-
-        {/* Search Results Info */}
+        {/* Main Content - Right */}
+        <main className="flex-1 min-w-0">
         {!loading && searchQuery && (
           <div className="mb-6 p-4 bg-gradient-blue-light border border-blue-200 rounded-xl animate-fade-in">
             <div className="flex items-center justify-between">
@@ -281,12 +317,12 @@ export default function ProductsPage() {
 
         {/* Products Grid */}
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {[...Array(10)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg shadow-sm border animate-pulse">
-                <div className="p-4">
-                  <div className="w-full h-48 bg-gray-200 rounded-lg mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse">
+                <div className="w-full aspect-[4/5] bg-gray-200"></div>
+                <div className="p-3">
+                  <div className="h-3 bg-gray-200 rounded mb-2"></div>
                   <div className="h-3 bg-gray-200 rounded w-2/3 mb-2"></div>
                   <div className="h-4 bg-gray-200 rounded w-1/2"></div>
                 </div>
@@ -295,77 +331,11 @@ export default function ProductsPage() {
           </div>
         ) : products.length > 0 ? (
           <>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {products.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.slug}`}
-                  className="bg-white rounded-xl shadow-lg border hover:shadow-xl transition-all duration-300 card-hover"
-                >
-                  <div className="p-4">
-                    <div className="w-full h-48 bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-                      {product.imageUrl ? (
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      )}
-                    </div>
-                    <h3 
-                      className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm"
-                      dangerouslySetInnerHTML={{
-                        __html: searchQuery ? highlightVietnameseSearchTerms(product.name, searchQuery) : product.name
-                      }}
-                    />
-                    {product.brand && (
-                      <p 
-                        className="text-xs text-gray-600 mb-2"
-                        dangerouslySetInnerHTML={{
-                          __html: searchQuery ? highlightVietnameseSearchTerms(product.brand, searchQuery) : product.brand
-                        }}
-                      />
-                    )}
-                      <div className="flex items-center gap-2">
-                        {product.isSale && product.salePrice ? (
-                          <>
-                            <p className="text-sm font-bold text-red-600">
-                              {formatPrice(product.salePrice)}
-                            </p>
-                            <p className="text-xs text-gray-500 line-through">
-                              {formatPrice(product.price)}
-                            </p>
-                          </>
-                        ) : (
-                          <p className="text-sm font-bold text-blue-600">
-                            {formatPrice(product.price)}
-                          </p>
-                        )}
-                      </div>
-                      {/* Stock indicator */}
-                      <div className="mt-2">
-                        {product.stock > 0 ? (
-                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            product.stock > 50 
-                              ? 'bg-green-100 text-green-800' 
-                              : product.stock > 10 
-                              ? 'bg-yellow-100 text-yellow-800' 
-                              : 'bg-orange-100 text-orange-800'
-                          }`}>
-                            Còn {product.stock}
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            Hết hàng
-                          </span>
-                        )}
-                      </div>
-                  </div>
-                </Link>
+                <div key={product.id} className="transform scale-90 origin-top">
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
 
@@ -483,6 +453,7 @@ export default function ProductsPage() {
             )}
           </div>
         )}
+        </main>
       </div>
     </div>
   )

@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import FooterNewsletter from './FooterNewsletter'
 
 export default function Footer() {
   const [showBackToTop, setShowBackToTop] = useState(false)
@@ -30,7 +29,7 @@ export default function Footer() {
             <div className="flex items-center space-x-3">
               <Image src="/logo.jpeg" alt="Logo" width={50} height={50} className="h-12 w-12 rounded-full" />
               <div>
-                <h3 className="text-xl font-bold">Nông Sản Việt</h3>
+                <h3 className="text-xl font-bold">Green Store</h3>
                 <p className="text-sm text-gray-400">Tươi ngon mỗi ngày</p>
               </div>
             </div>
@@ -80,7 +79,7 @@ export default function Footer() {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                Email: cskh@nongsanviet.vn
+                Email: cskh@greenstore.vn
               </p>
               <p className="flex items-center gap-2">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,18 +109,12 @@ export default function Footer() {
 
         </div>
 
-        {/* Newsletter Section - Full Width */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <div className="max-w-2xl mx-auto">
-            <FooterNewsletter />
-          </div>
-        </div>
       </div>
 
       {/* Copyright */}
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-400">
-          <p>&copy; {new Date().getFullYear()} Nông Sản Việt. Tất cả quyền được bảo lưu.</p>
+          <p>&copy; {new Date().getFullYear()} Green Store. Tất cả quyền được bảo lưu.</p>
         </div>
       </div>
 

@@ -29,6 +29,13 @@ interface NavItem {
   children?: { label: string; href: string }[];
 }
 
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  children?: Category[];
+}
+
 interface HeaderProps {
   logoSrc?: string;
   nav?: NavItem[];
@@ -44,6 +51,7 @@ interface HeaderProps {
   isLoggedIn?: boolean;
   userName?: string;
   userRole?: string;
+  onLogout?: () => void;
 }
 
 // ============================================================================
@@ -58,8 +66,7 @@ const DEFAULT_NAV: NavItem[] = [
     href: '/products',
     children: [
       { label: 'Tất cả sản phẩm', href: '/products' },
-      { label: 'Sản phẩm mới', href: '/products/new' },
-      { label: 'Khuyến mãi', href: '/products/sale' },
+      { label: 'Khuyến mãi', href: '/products?sale=true' },
     ],
   },
   {
@@ -115,6 +122,7 @@ export default function Header({
   isLoggedIn = false,
   userName = '',
   userRole = 'user',
+  onLogout,
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -124,6 +132,48 @@ export default function Header({
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [hideTopBars, setHideTopBars] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [navItems, setNavItems] = useState<NavItem[]>(nav);
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories');
+        const data = await response.json();
+        
+        if (data.success) {
+          setCategories(data.data);
+          
+          // Build navigation items with dynamic categories
+          const categoryNavItems = data.data.map((category: Category) => ({
+            label: category.name,
+            href: `/categories/${category.slug}`
+          }));
+
+          // Update nav items with dynamic categories
+          const updatedNav = nav.map(item => {
+            if (item.label === 'Danh mục') {
+              return {
+                ...item,
+                children: categoryNavItems
+              };
+            }
+            return item;
+          });
+          
+          setNavItems(updatedNav);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Keep default navigation if fetch fails
+        setNavItems(nav);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
 
   // Sticky scroll detection with top bars hiding
   useEffect(() => {
@@ -163,8 +213,11 @@ export default function Header({
   // Handle search submission
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (onSearch) {
+    console.log('Header_v2 handleSearchSubmit called with searchQuery:', searchQuery);
+    if (onSearch && searchQuery.trim()) {
+      console.log('Calling onSearch with:', searchQuery);
       onSearch(searchQuery);
+      // Keep the search query in the input for user reference
     }
   };
 
@@ -276,7 +329,7 @@ export default function Header({
           <div className="relative flex items-center gap-4 py-6">
             {/* LEFT - Search Box */}
             <div className="hidden md:block flex-1 max-w-xs">
-              <form onSubmit={handleSearchSubmit} action={onSearch ? undefined : '/search'}>
+              <form onSubmit={handleSearchSubmit}>
                 <div className="relative">
                   <input
                     type="text"
@@ -378,15 +431,20 @@ export default function Header({
                             </Link>
                           )}
                           <div className="border-t border-gray-100 my-1"></div>
-                          <Link
-                            href="/api/auth/logout"
-                            className="flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors"
+                          <button
+                            onClick={() => {
+                              if (onLogout) {
+                                onLogout();
+                              }
+                              setShowUserMenu(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition-colors"
                           >
                             <span className="w-4 flex items-center justify-center">
                               <X className="w-4 h-4" />
                             </span>
                             <span>Đăng xuất</span>
-                          </Link>
+                          </button>
                         </>
                       ) : (
                         <>
@@ -459,7 +517,7 @@ export default function Header({
           <div className="flex items-center justify-between">
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center">
-              {nav.map((item, idx) => (
+              {navItems.map((item, idx) => (
                 <div
                   key={idx}
                   className="relative group"
@@ -620,7 +678,7 @@ export default function Header({
 
             {/* Mobile Search */}
             <div className="p-4 border-b border-gray-200">
-              <form onSubmit={handleSearchSubmit} action={onSearch ? undefined : '/search'}>
+              <form onSubmit={handleSearchSubmit}>
                 <div className="relative">
                   <input
                     type="text"
@@ -642,7 +700,7 @@ export default function Header({
 
             {/* Mobile Nav */}
             <nav className="py-2">
-              {nav.map((item, idx) => (
+              {navItems.map((item, idx) => (
                 <div key={idx} className="border-b border-gray-100">
                   {item.children ? (
                     <>

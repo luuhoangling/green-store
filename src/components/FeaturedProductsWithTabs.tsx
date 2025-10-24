@@ -32,10 +32,10 @@ interface Category {
 
 const tabs = [
   { id: 'all', label: 'Tất cả', slug: null },
-  { id: 'rau-cu-qua', label: 'Rau - Củ - Quả', keywords: ['rau', 'củ', 'quả', 'trái'] },
-  { id: 'thit', label: 'Thịt - Phụ phẩm', keywords: ['thịt', 'gà', 'heo', 'bò'] },
-  { id: 'thuy-san', label: 'Thủy sản', keywords: ['cá', 'tôm', 'hải sản', 'thủy'] },
-  { id: 'gao', label: 'Gạo - Ngũ cốc', keywords: ['gạo', 'ngũ cốc', 'bột'] }
+  { id: 'rau-cu-qua', label: 'Rau - Củ - Quả', slug: 'rau-cu-qua' },
+  { id: 'thit', label: 'Thịt - Phụ phẩm', slug: 'thit-phu-pham' },
+  { id: 'thuy-san', label: 'Thủy sản', slug: 'thuy-san' },
+  { id: 'gao', label: 'Gạo - Ngũ cốc', slug: 'gao-ngu-coc' }
 ]
 
 export default function FeaturedProductsWithTabs() {
@@ -88,7 +88,7 @@ export default function FeaturedProductsWithTabs() {
     }
 
     const tab = tabs.find(t => t.id === activeTab)
-    if (!tab || !tab.keywords) {
+    if (!tab || !tab.slug) {
       setFilteredProducts(products)
       return
     }
@@ -96,12 +96,8 @@ export default function FeaturedProductsWithTabs() {
     const filtered = products.filter(product => {
       if (!product.category) return false
       
-      const categoryName = product.category.name.toLowerCase()
-      const productName = product.name.toLowerCase()
-      
-      return tab.keywords!.some(keyword => 
-        categoryName.includes(keyword) || productName.includes(keyword)
-      )
+      // Match by category slug
+      return product.category.slug === tab.slug
     })
 
     setFilteredProducts(filtered)

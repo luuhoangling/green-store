@@ -33,6 +33,7 @@ export default function ProductDetailPage() {
   const [relatedLoading, setRelatedLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [addingToCart, setAddingToCart] = useState(false)
+  const [showFullDescription, setShowFullDescription] = useState(false)
 
   useEffect(() => {
     if (params.slug) {
@@ -159,7 +160,7 @@ export default function ProductDetailPage() {
 
           <div className="mb-6">
             <div className="flex items-center gap-4">
-              {product.isSale && product.salePrice ? (
+              {product.isSale && product.salePrice && product.salePrice > 0 ? (
                 <>
                   <p className="text-3xl font-bold text-red-600">
                     {formatPrice(product.salePrice)}
@@ -210,7 +211,43 @@ export default function ProductDetailPage() {
           {product.description && (
             <div className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Mô tả sản phẩm</h3>
-              <p className="text-gray-600 whitespace-pre-line">{product.description}</p>
+              <div className="relative">
+                <p 
+                  className={`text-gray-600 whitespace-pre-line ${
+                    !showFullDescription ? 'line-clamp-6' : ''
+                  }`}
+                  style={!showFullDescription ? { 
+                    display: '-webkit-box',
+                    WebkitLineClamp: 6,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden'
+                  } : {}}
+                >
+                  {product.description}
+                </p>
+                {product.description.split('\n').length > 6 || product.description.length > 300 ? (
+                  <button
+                    onClick={() => setShowFullDescription(!showFullDescription)}
+                    className="mt-2 text-[#6a9739] hover:text-[#527a2d] font-medium text-sm flex items-center gap-1 transition-colors"
+                  >
+                    {showFullDescription ? (
+                      <>
+                        Thu gọn
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        </svg>
+                      </>
+                    ) : (
+                      <>
+                        Xem thêm
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                ) : null}
+              </div>
             </div>
           )}
 
@@ -242,10 +279,6 @@ export default function ProductDetailPage() {
               className="w-full bg-[#6a9739] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#527a2d] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {addingToCart ? 'Đang thêm...' : product.stock === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
-            </button>
-            
-            <button className="w-full border border-[#6a9739] text-[#6a9739] py-3 px-6 rounded-lg font-semibold hover:bg-[#f4f8f0] transition-colors">
-              Yêu cầu lắp đặt
             </button>
           </div>
 
@@ -314,7 +347,7 @@ export default function ProductDetailPage() {
                         <p className="text-xs text-gray-600 mb-2">{relatedProduct.brand}</p>
                       )}
                       <div className="flex items-center gap-2">
-                        {relatedProduct.salePrice ? (
+                        {relatedProduct.salePrice && relatedProduct.salePrice > 0 ? (
                           <>
                             <p className="text-sm font-bold text-red-600">
                               {formatPrice(relatedProduct.salePrice)}

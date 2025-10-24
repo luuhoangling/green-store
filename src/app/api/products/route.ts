@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     const maxPrice = searchParams.get('maxPrice')
     const brand = searchParams.get('brand')
     const inStock = searchParams.get('inStock')
+    const onSale = searchParams.get('sale')
     const page = parseInt(searchParams.get('page') || '1')
     const pageSize = parseInt(searchParams.get('pageSize') || '12')
     const skip = (page - 1) * pageSize
@@ -73,6 +74,10 @@ export async function GET(request: Request) {
       
       if (inStock === 'true') {
         conditions.push(`p.stock > 0`)
+      }
+      
+      if (onSale === 'true') {
+        conditions.push(`p.is_sale = true`)
       }
       
       return conditions.join(' AND ')

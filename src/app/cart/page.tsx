@@ -489,7 +489,7 @@ export default function CartPage() {
             <button 
               onClick={handleCheckoutClick}
               disabled={checkoutLoading || !user}
-              className="w-full bg-gradient-blue text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#6a9739] hover:bg-[#527a2d] text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {checkoutLoading ? 'Đang xử lý...' : 'Thanh toán'}
             </button>
@@ -699,7 +699,7 @@ export default function CartPage() {
                 <button
                   onClick={handleConfirmCheckout}
                   disabled={checkoutLoading}
-                  className="flex-1 px-4 py-2 bg-gradient-blue text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-4 py-2 bg-[#6a9739] hover:bg-[#527a2d] text-white rounded-lg font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading ? 'Đang xử lý...' : 'Xác nhận đặt hàng'}
                 </button>

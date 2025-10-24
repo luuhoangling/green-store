@@ -4,6 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { useCart } from '@/lib/cart-context'
+import toast from 'react-hot-toast'
 
 interface ProductCardProps {
   product: {
@@ -27,7 +29,9 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, showDetailButton = false }: ProductCardProps) {
   const router = useRouter()
+  const { addToCart } = useCart()
   const [isHovered, setIsHovered] = useState(false)
+  const [addingToCart, setAddingToCart] = useState(false)
 
   // Normalize product properties
   const name = product.name || product.title || 'Sản phẩm'
@@ -44,10 +48,33 @@ export default function ProductCard({ product, showDetailButton = false }: Produ
     }
   }
 
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.stopPropagation()
-    // TODO: Implement add to cart
-    console.log('Add to cart:', product.id)
+    
+    if (addingToCart) return
+    
+    // Check stock
+    if (product.stock != null && product.stock <= 0) {
+      toast.error('Sản phẩm đã hết hàng')
+      return
+    }
+
+    setAddingToCart(true)
+    try {
+      const productId = typeof product.id === 'string' ? parseInt(product.id) : product.id
+      const success = await addToCart(productId, 1)
+      
+      if (success) {
+        toast.success('Đã thêm vào giỏ hàng!')
+      } else {
+        toast.error('Có lỗi xảy ra khi thêm vào giỏ hàng')
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error)
+      toast.error('Có lỗi xảy ra khi thêm vào giỏ hàng')
+    } finally {
+      setAddingToCart(false)
+    }
   }
 
   const handleAddToWishlist = (e: React.MouseEvent) => {
@@ -75,16 +102,33 @@ export default function ProductCard({ product, showDetailButton = false }: Produ
     >
       {/* Badge */}
       {(product.badge || (isSale && discount > 0)) && (
-        <div className="absolute top-3 left-3 z-10">
-          {product.badge && (
-            <span className="inline-block bg-gradient-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+          {product.badge && !isSale && (
+            <motion.span 
+              initial={{ scale: 0, rotate: -10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              className="inline-block bg-gradient-to-r from-[#6a9739] to-[#527a2d] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg"
+            >
               {product.badge}
-            </span>
+            </motion.span>
           )}
-          {isSale && discount > 0 && !product.badge && (
-            <span className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-              -{discount}%
-            </span>
+          {isSale && discount > 0 && (
+            <motion.div
+              initial={{ scale: 0, rotate: 10 }}
+              animate={{ scale: 1, rotate: 0 }}
+              className="relative"
+            >
+              <span className="inline-flex items-center gap-1 bg-gradient-to-r from-red-500 via-red-600 to-red-500 text-white text-sm font-bold px-3 py-1.5 rounded-lg shadow-lg animate-pulse">
+                <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
+                </svg>
+                <span className="font-extrabold">-{discount}%</span>
+              </span>
+              {/* Shine effect */}
+              <span className="absolute inset-0 rounded-lg overflow-hidden">
+                <span className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/30 to-transparent"></span>
+              </span>
+            </motion.div>
           )}
         </div>
       )}
@@ -130,13 +174,21 @@ export default function ProductCard({ product, showDetailButton = false }: Produ
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
-            className="group/btn bg-white hover:bg-[#6a9739] text-gray-800 hover:text-white p-3 rounded-full shadow-lg transition-all duration-200 transform hover:scale-110"
+            disabled={addingToCart || (product.stock != null && product.stock <= 0)}
+            className="group/btn bg-white hover:bg-[#6a9739] text-gray-800 hover:text-white p-3 rounded-full shadow-lg transition-all duration-200 transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             aria-label="Thêm vào giỏ"
             title="Thêm vào giỏ"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+            {addingToCart ? (
+              <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            )}
           </button>
 
           {/* Add to Wishlist Button */}
@@ -163,35 +215,26 @@ export default function ProductCard({ product, showDetailButton = false }: Produ
           {name}
         </h3>
 
-        {/* Rating */}
-        {product.rating && (
-          <div className="flex items-center gap-1 mb-2">
-            {[...Array(5)].map((_, i) => (
-              <svg
-                key={i}
-                className={`w-4 h-4 ${i < product.rating! ? 'text-[#ffc107]' : 'text-gray-300'}`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            ))}
-          </div>
-        )}
-
         {/* Price */}
-        <div className="flex items-center gap-2 flex-wrap">
-          {isSale && salePrice ? (
-            <>
-              <span className="text-lg font-bold text-[#6a9739]">
-                {formatVnd(salePrice)}
-              </span>
-              <span className="text-sm text-gray-500 line-through">
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          {isSale && salePrice && salePrice > 0 ? (
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-extrabold text-red-600">
+                  {formatVnd(salePrice)}
+                </span>
+                {discount > 0 && (
+                  <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">
+                    Tiết kiệm {formatVnd(product.price - salePrice)}
+                  </span>
+                )}
+              </div>
+              <span className="text-sm text-gray-400 line-through decoration-2">
                 {formatVnd(product.price)}
               </span>
-            </>
+            </div>
           ) : (
-            <span className="text-lg font-bold text-[#6a9739]">
+            <span className="text-xl font-bold text-[#6a9739]">
               {formatVnd(product.price)}
             </span>
           )}

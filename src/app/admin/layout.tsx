@@ -76,16 +76,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-blue-light">
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100">
       {/* Mobile sidebar */}
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white shadow-xl">
-          <div className="flex h-16 items-center justify-between px-4 bg-gradient-blue">
+          <div className="flex h-16 items-center justify-between px-4 bg-gradient-primary">
             <h1 className="text-xl font-bold text-white">Admin Panel</h1>
             <button
               onClick={() => setSidebarOpen(false)}
-              className="text-white hover:text-blue-200 transition-colors duration-200"
+              className="text-white hover:text-green-200 transition-colors duration-200"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -108,30 +108,24 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <span className="ml-3">{item.name}</span>
               </Link>
             ))}
-            <div className="border-t border-blue-200 pt-4 mt-4">
+            <div className="border-t border-green-200 pt-4 mt-4">
               <button
-                onClick={() => {
-                  router.push('/')
-                  setSidebarOpen(false)
-                }}
+                onClick={() => router.push('/')}
                 className="group flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-green-50 hover:text-green-600 w-full text-left transition-all duration-300 hover:transform hover:scale-105 mb-2"
               >
-                <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
-                Về trang chủ
+                <span className="ml-3">Về trang chủ</span>
               </button>
               <button
-                onClick={() => {
-                  handleLogout()
-                  setSidebarOpen(false)
-                }}
+                onClick={handleLogout}
                 className="group flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-red-50 hover:text-red-600 w-full text-left transition-all duration-300 hover:transform hover:scale-105"
               >
-                <svg className="mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
                 </svg>
-                Đăng xuất
+                <span className="ml-3">Đăng xuất</span>
               </button>
             </div>
           </nav>
@@ -142,14 +136,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className={`hidden lg:fixed lg:inset-y-0 lg:flex lg:flex-col transition-all duration-300 ${
         desktopSidebarOpen ? 'lg:w-64' : 'lg:w-16'
       }`}>
-        <div className="flex flex-col flex-grow bg-white border-r border-blue-200 shadow-xl">
-          <div className="flex h-16 items-center justify-between px-4 bg-gradient-blue">
+        <div className="flex flex-col flex-grow bg-white border-r border-green-200 shadow-xl">
+          <div className="flex h-16 items-center justify-between px-4 bg-gradient-primary">
             {desktopSidebarOpen && (
               <h1 className="text-xl font-bold text-white">Admin Panel</h1>
             )}
             <button
               onClick={() => setDesktopSidebarOpen(!desktopSidebarOpen)}
-              className="text-white hover:text-blue-200 p-1 rounded-lg hover:bg-blue-700 transition-all duration-300"
+              className="text-white hover:text-green-200 p-1 rounded-lg hover:bg-green-700 transition-all duration-300"
               title={desktopSidebarOpen ? 'Thu gọn sidebar' : 'Mở rộng sidebar'}
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -179,7 +173,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 )}
               </Link>
             ))}
-            <div className="border-t border-blue-200 pt-4 mt-4">
+            <div className="border-t border-green-200 pt-4 mt-4">
               <button
                 onClick={() => router.push('/')}
                 className="group flex items-center px-3 py-3 text-sm font-medium rounded-lg text-gray-600 hover:bg-green-50 hover:text-green-600 w-full text-left transition-all duration-300 hover:transform hover:scale-105 mb-2"
@@ -212,10 +206,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main content */}
       <div className={`transition-all duration-300 ${desktopSidebarOpen ? 'lg:pl-64' : 'lg:pl-16'}`}>
         {/* Top header */}
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-blue-200 bg-white px-4 shadow-lg sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-green-200 bg-white px-4 shadow-lg sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
-            className="-m-2.5 p-2.5 text-gray-700 lg:hidden hover:text-blue-600 transition-colors duration-200"
+            className="-m-2.5 p-2.5 text-gray-700 lg:hidden hover:text-green-600 transition-colors duration-200"
             onClick={() => setSidebarOpen(true)}
           >
             <span className="sr-only">Open sidebar</span>
@@ -235,7 +229,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   {user?.name || user?.email || 'Admin User'}
                 </span>
                 <div className="flex items-center gap-x-2">
-                  <button className="text-gray-400 hover:text-blue-600 transition-colors duration-200">
+                  <button className="text-gray-400 hover:text-green-600 transition-colors duration-200">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                     </svg>
@@ -272,16 +266,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </main>
 
         {/* Footer */}
-        <footer className="bg-white border-t border-blue-200">
+        <footer className="bg-white border-t border-green-200">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-500">
-                © 2024 Vật Tư Điện Nước. Tất cả quyền được bảo lưu.
+                © {new Date().getFullYear()} Green Store. Tất cả quyền được bảo lưu.
               </div>
               <div className="flex items-center space-x-4 text-sm text-gray-500">
                 <span>Phiên bản 1.0.0</span>
                 <span>•</span>
-                <span className="text-gradient-blue font-medium">Admin Panel</span>
+                <span className="text-[#6a9739] font-medium">Admin Panel</span>
               </div>
             </div>
           </div>

@@ -8,7 +8,6 @@ import TopSellingGallery from '@/components/TopSellingGallery'
 import FarmersPartners from '@/components/FarmersPartners'
 import Testimonials from '@/components/Testimonials'
 import BlogTeasers from '@/components/BlogTeasers'
-import Newsletter from '@/components/Newsletter'
 import ScrollToTop from '@/components/ScrollToTop'
 
 export default function Home() {
@@ -40,9 +39,6 @@ export default function Home() {
         
         {/* 8. Blog Teasers */}
         <BlogTeasers />
-        
-        {/* 9. Newsletter CTA */}
-        <Newsletter />
         
       </div>
       

@@ -326,7 +326,7 @@ export default function CategoryPage() {
                       <p className="text-sm text-gray-600 mb-2">{product.brand}</p>
                     )}
                     <div className="flex items-center gap-2">
-                      {product.isSale && product.salePrice ? (
+                      {product.isSale && product.salePrice && product.salePrice > 0 ? (
                         <>
                           <p className="text-lg font-bold text-red-600">
                             {formatPrice(product.salePrice)}
