@@ -37,10 +37,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const { token } = useAuth()
 
   const fetchCart = async () => {
+    // Don't fetch cart if not logged in
+    if (!token) {
+      setCart(null)
+      setCartItemCount(0)
+      return
+    }
+
     try {
-      const headers: HeadersInit = {}
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
+      const headers: HeadersInit = {
+        'Authorization': `Bearer ${token}`
       }
       
       const response = await fetch('/api/cart', { headers })
@@ -51,9 +57,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         // Calculate total item count
         const totalItems = data.data.items.reduce((sum: number, item: CartItem) => sum + item.qty, 0)
         setCartItemCount(totalItems)
+      } else {
+        // If cart fetch fails (e.g., unauthorized), clear cart
+        setCart(null)
+        setCartItemCount(0)
       }
     } catch (error) {
       console.error('Error fetching cart:', error)
+      setCart(null)
+      setCartItemCount(0)
     }
   }
 
@@ -62,12 +74,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const addToCart = async (productId: number, qty: number): Promise<boolean> => {
+    // Require authentication
+    if (!token) {
+      console.error('Must be logged in to add to cart')
+      return false
+    }
+
     try {
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
-      }
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       }
       
       const response = await fetch('/api/cart/items', {
@@ -93,15 +109,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const updateCartItem = async (itemId: number, qty: number): Promise<boolean> => {
+    // Require authentication
+    if (!token) {
+      console.error('Must be logged in to update cart')
+      return false
+    }
+
     try {
       const cartItem = cart?.items.find(item => item.id === itemId)
       if (!cartItem) return false
 
       const headers: HeadersInit = {
         'Content-Type': 'application/json',
-      }
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       }
 
       const response = await fetch('/api/cart/items', {
@@ -127,10 +147,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const removeFromCart = async (itemId: number): Promise<boolean> => {
+    // Require authentication
+    if (!token) {
+      console.error('Must be logged in to remove from cart')
+      return false
+    }
+
     try {
-      const headers: HeadersInit = {}
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`
+      const headers: HeadersInit = {
+        'Authorization': `Bearer ${token}`
       }
       
       const response = await fetch(`/api/cart/items/${itemId}`, {
@@ -153,7 +178,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Fetch cart on mount and when token changes
   useEffect(() => {
-    fetchCart()
+    if (token) {
+      fetchCart()
+    } else {
+      // Clear cart when logged out
+      setCart(null)
+      setCartItemCount(0)
+    }
   }, [token])
 
   return (

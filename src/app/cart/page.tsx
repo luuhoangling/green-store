@@ -181,7 +181,6 @@ export default function CartPage() {
   }
 
   const calculateSubtotal = () => {
-    if (!cart) return 0
     return cart.items.reduce((sum, item) => {
       const price = Number(item.unitPriceSnapshot) || 0
       const qty = Number(item.qty) || 0
@@ -190,7 +189,7 @@ export default function CartPage() {
   }
 
   const calculateTotal = () => {
-    return calculateSubtotal() + 30000 // Fixed shipping fee
+    return calculateSubtotal() // No shipping fee
   }
 
   const validateAddressForm = () => {
@@ -474,10 +473,6 @@ export default function CartPage() {
                 <span className="text-gray-600">Tạm tính:</span>
                 <span className="font-medium">{formatPrice(calculateSubtotal())}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Phí vận chuyển:</span>
-                <span className="font-medium">{formatPrice(30000)}</span>
-              </div>
               <div className="border-t border-gray-200 pt-3">
                 <div className="flex justify-between">
                   <span className="text-lg font-semibold text-gray-900">Tổng cộng:</span>
@@ -674,10 +669,6 @@ export default function CartPage() {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Tạm tính:</span>
                     <span className="font-medium">{formatPrice(calculateSubtotal())}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Phí vận chuyển:</span>
-                    <span className="font-medium">{formatPrice(30000)}</span>
                   </div>
                   <div className="border-t border-gray-200 pt-2">
                     <div className="flex justify-between">
