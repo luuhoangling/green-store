@@ -7,22 +7,46 @@ interface MainContentProps {
 }
 
 export default function MainContent({ children }: MainContentProps) {
-  const [isTopBannerVisible, setIsTopBannerVisible] = useState(true)
+  const [paddingTop, setPaddingTop] = useState('172px') // Default height của header (48px + 100px + 56px)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
-      setIsTopBannerVisible(scrollTop < 100)
+    const updatePadding = () => {
+      const header = document.querySelector('header')
+      if (header) {
+        const height = header.getBoundingClientRect().height
+        setPaddingTop(`${height}px`)
+      }
     }
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    // Initial update
+    setTimeout(updatePadding, 100)
+
+    // Update on scroll
+    let ticking = false
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          updatePadding()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', updatePadding)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', updatePadding)
+    }
   }, [])
 
   return (
-    <main className={`transition-all duration-300 ${
-      isTopBannerVisible ? 'pt-40' : 'pt-28'
-    }`}>
+    <main 
+      className="transition-all duration-500 ease-in-out"
+      style={{ paddingTop }}
+    >
       {children}
     </main>
   )

@@ -77,7 +77,7 @@ const ctaVariants = {
 
 export default function HeroSlider() {
   return (
-    <section className="relative w-full mb-0">
+    <section className="relative w-full">
       <Swiper
         modules={[Autoplay, Navigation, Pagination, EffectFade]}
         effect="fade"
@@ -97,7 +97,7 @@ export default function HeroSlider() {
           nextEl: '.hero-swiper-button-next',
           prevEl: '.hero-swiper-button-prev',
         }}
-        className="hero-slider h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden"
+        className="hero-slider h-[520px] md:h-[620px] lg:h-[720px] overflow-hidden"
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>

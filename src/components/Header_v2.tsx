@@ -225,17 +225,21 @@ export default function Header({
 
   return (
     <header
-      className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${
-        isScrolled ? 'shadow-lg' : ''
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-500 ease-in-out"
+      style={{
+        boxShadow: isScrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none'
+      }}
     >
       {/* ====================================================================== */}
       {/* TIER 1 - TOP BAR */}
       {/* ====================================================================== */}
       <div 
-        className={`bg-gray-100 border-b border-gray-200 overflow-hidden transition-all duration-500 ease-in-out ${
-          hideTopBars ? 'max-h-0 opacity-0' : 'max-h-20 opacity-100'
-        }`}
+        className="bg-gray-100 border-b border-gray-200 transition-all duration-500 ease-in-out"
+        style={{
+          height: hideTopBars ? '0px' : '48px',
+          opacity: hideTopBars ? 0 : 1,
+          overflow: 'hidden'
+        }}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-12 text-sm">
@@ -321,9 +325,12 @@ export default function Header({
       {/* TIER 2 - MAIN HEADER (Search | Logo | Sign In + Cart) */}
       {/* ====================================================================== */}
       <div 
-        className={`border-b border-gray-200 transition-all duration-500 ease-in-out relative z-10 ${
-          hideTopBars ? 'max-h-0 opacity-0 invisible' : 'max-h-40 opacity-100 visible'
-        }`}
+        className="border-b border-gray-200 transition-all duration-500 ease-in-out relative z-30"
+        style={{
+          height: hideTopBars ? '0px' : 'auto',
+          opacity: hideTopBars ? 0 : 1,
+          overflow: hideTopBars ? 'hidden' : 'visible'
+        }}
       >
         <div className="container mx-auto px-4">
           <div className="relative flex items-center gap-4 py-6">
@@ -394,7 +401,7 @@ export default function Header({
 
                 {/* User Dropdown Menu */}
                 {showUserMenu && (
-                  <div className="absolute right-0 top-full pt-1 z-[100]">
+                  <div className="absolute right-0 top-full pt-1 z-[9999]">
                     <div className="w-56 bg-white rounded-lg shadow-xl border border-gray-100 py-2">
                       {isLoggedIn ? (
                         <>
