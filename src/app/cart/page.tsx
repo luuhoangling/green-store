@@ -181,6 +181,7 @@ export default function CartPage() {
   }
 
   const calculateSubtotal = () => {
+    if (!cart) return 0
     return cart.items.reduce((sum, item) => {
       const price = Number(item.unitPriceSnapshot) || 0
       const qty = Number(item.qty) || 0
