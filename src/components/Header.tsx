@@ -86,7 +86,7 @@ export default function Header() {
               Trang chủ
             </Link>
             <Link href="/products" className="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-green-50">
-              Nông sản
+              Sản phẩm
             </Link>
             <Link href="/cart" className="text-gray-700 hover:text-green-600 px-3 py-2 rounded-lg text-sm font-medium relative transition-all duration-300 hover:bg-green-50">
               Giỏ hàng
